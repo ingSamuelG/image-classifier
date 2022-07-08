@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf%}
+
+{% block title %}Login page{% endblock %}
+
+{% block page_content %}
+<div class="container full_height d-flex justify-content-center align-items-center">
+    <div class="row mt-3">
+        <div class="col-7">
+            <div class="container d-flex justify-content-center align-items-center">
+                <div class="row">
+                    <div class="col">
+                        <span class="border test">
+                            <img src="https://x3vid.com/images/4244/ep5.xhcdn.com_000_107_345_026_1000.jpg"
+                                class="img-fluid rounded-3" alt="sexy grill">
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-5">
+            <div class=" container  full_height d-flex justify-content-center align-items-center">
+                <div class="row">
+                    <div class="col">
+                        <form action="" method="post" name="simple" enctype="multipart/form-data">
+                            {{form.hidden_tag()}}
+                            <h6>{{form.radio.label}}</h6>
+                            {% for subfield in form.radio %}
+                            <div class="form-check form-check-inline">
+                                {{ subfield(class_="form-check-input")}}
+                                {{ subfield.label(class_="form-check-label") }}
+                            </div>
+                            {% endfor %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

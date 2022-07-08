@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Eager Llama - Page not found {% endblock %}
+
+{% block page_content %}
+<div class="container full_height d-flex justify-content-center align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <img src="{{url_for('static', filename='img/Imagen1.png')}}" alt="llama">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="display-1">404</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <h2 class="display-5 text-muted">OOOPS!!</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <h3 class="display-6"> we couldn't find this page</h3>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock%}
