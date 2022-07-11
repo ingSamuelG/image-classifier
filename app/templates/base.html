@@ -40,38 +40,17 @@
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 {% if current_user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
-                </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="{{ url_for('features.create_scenario', number = 1) }}"
-                        id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         Images
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        {% if current_user.role.id == 1 %}
-                        <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="">Super Admin</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item"
-                                        href="{{ url_for('admin.create_user' , u_type='super_admin') }}">
-                                        Rate</a>
-                                </li>
-                                <li><a class="dropdown-item"
-                                        href="{{ url_for('admin.view_users', u_type='super_admin',  page = 1) }}">View</a>
-                                </li>
-                            </ul>
+                        <li class="dropdown-submenu"><a class="dropdown-item"
+                                href="{{ url_for('classifier.rate') }}">Rate</a>
                         </li>
-                        <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="">Admin</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{{ url_for('admin.create_user' , u_type='admin') }}">
-                                        Create</a>
-                                </li>
-                                <li><a class="dropdown-item"
-                                        href="{{ url_for('admin.view_users' , u_type='admin', page = 1) }}">View</a>
-                                </li>
-                            </ul>
+                        <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="">other route</a>
                         </li>
-                        {% endif %}
                         {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
@@ -81,6 +60,9 @@
                     <a class="nav-link disabled">Disabled</a>
                 </li> -->
                     </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                </li>
         </div>
     </div>
 </nav>

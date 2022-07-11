@@ -123,7 +123,12 @@ class User (UserMixin, db.Model):
 
     # def __repr__(self):
     #     return '<User %r>' % self.first_name    
-    
+
+    @staticmethod
+    def add_test_user():
+        user = User(email  = "test_user@test.com", first_name = "Test" , last_name = "User", password = "test1234", organization = "Test user created in shell", role_id = 2)
+        db.session.add(user)
+
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
@@ -186,4 +191,35 @@ class User (UserMixin, db.Model):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
-    
+
+# mysql+pymysql://root:@localhost/image
+class Image(db.Model):
+    __tablename__='images'
+    id =  db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(255))
+    url =  db.Column(db.String(255))
+    title = db.Column(db.String(255))
+    tags = db.Column(db.String(255))
+    num_ratings =  db.Column(db.Integer)
+    total_rating =  db.Column(db.Integer)
+    views =  db.Column(db.Integer)
+    width =  db.Column(db.Integer)
+    height =  db.Column(db.Integer)
+    source = db.Column(db.String(255))
+    image_set_id =  db.Column(db.Integer)
+    created_at =  db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    thumb_url = db.Column(db.String(255))
+    flag =  db.Column(db.Integer)
+    image_file_path =  db.Column(db.String(255))
+    thumb_file_path =  db.Column(db.String(255))
+    xh_views = db.Column(db.Integer)
+    xh_total_rating =  db.Column(db.Integer)
+    ratio =  db.Column(db.Integer)
+    image_label_rating = db.relationship('Image_label', backref='image', cascade = "all,delete, delete-orphan", lazy='dynamic')
+
+class Image_label(db.Model):
+    __tablename__='image_labels'
+    id = db.Column(db.Integer, primary_key=True)
+    images_id= db.Column(db.Integer , db.ForeignKey('images.id'))
+    rating = db.Column(db.Integer)

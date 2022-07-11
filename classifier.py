@@ -3,6 +3,7 @@ import os
 from app import create_app, db
 import datetime
 import math
+import click
 from decimal import Decimal, localcontext, ROUND_05UP
 from app.models import User, Role
 from flask_migrate import Migrate, upgrade
@@ -28,6 +29,23 @@ def deploy():
     """Run deployment tasks."""
     # migrate database to latest revision
     upgrade()
+
+
+@app.cli.command('create_db')
+def createDatabase():
+    """Create the db based on the model difined"""
+    db.create_all()
+    print('***** Datebase created ****')
+
+@app.cli.command()
+def addTestUser():
+    """add a test user"""
+    try:
+        User.add_test_user()
+        db.session.commit()
+        print("email:test_user@test.com password:test1234")
+    except:
+        print("Error seeding user into the database")
 
 
 @app.cli.command()

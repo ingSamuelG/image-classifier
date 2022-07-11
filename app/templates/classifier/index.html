@@ -1,19 +1,17 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf%}
 
-{% block title %}Login page{% endblock %}
+{% block title %}Rate page{% endblock %}
 
 {% block page_content %}
 <div class="container full_height d-flex justify-content-center align-items-center">
     <div class="row mt-3">
         <div class="col-7">
-            <div class="container d-flex justify-content-center align-items-center">
+            <div class="container d-flex justify-content-center align-items-center rounded">
                 <div class="row">
-                    <div class="col">
-                        <span class="border test">
-                            <img src="https://x3vid.com/images/4244/ep5.xhcdn.com_000_107_345_026_1000.jpg"
-                                class="img-fluid rounded-3" alt="sexy grill">
-                        </span>
+                    <div class="col rounded">
+                        <div class="hero-image rounded" style="background-image: url({{image_wo_rating.url}})">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -23,7 +21,7 @@
             <div class=" container  full_height d-flex justify-content-center align-items-center">
                 <div class="row">
                     <div class="col">
-                        <form action="" method="post" name="simple" enctype="multipart/form-data">
+                        <form action="{{url_for('classifier.rate')}}" method="post">
                             {{form.hidden_tag()}}
                             <h6>{{form.radio.label}}</h6>
                             {% for subfield in form.radio %}
@@ -40,4 +38,12 @@
     </div>
 </div>
 
+{% endblock %}
+{% block scripts %}
+{{super()}}
+<script type="text/javascript">
+    $('input[type=radio]').on('change', function () {
+        $(this).closest("form").submit();
+    });
+</script>
 {% endblock %}
