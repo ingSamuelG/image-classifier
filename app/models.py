@@ -1,16 +1,6 @@
-from flask_migrate import current
-from flask import current_app, json
-from flask_sqlalchemy import model
-from sqlalchemy.orm import backref
-from sqlalchemy import MetaData
-from decimal import Decimal, localcontext, ROUND_05UP
-# from app.exceptions import ValidationError
-# # from .api .errors import bad_request
 from wtforms.validators import ValidationError
 from . import db
 import datetime
-import math
-import re
 from werkzeug.security import generate_password_hash, check_password_hash
 # from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_login import UserMixin
@@ -53,77 +43,7 @@ class User (UserMixin, db.Model):
 
     def __repr__(self):
         return 'User %r' % self.first_name
-
-    # def generate_confirmation_token(self, expiration = 3600):
-    #     s = Serializer(current_app.config['SECRET_KEY'], expiration)
-    #     return s.dumps({'confirm': self.id}).decode('utf-8')
-
-    # def generate_reset_token(self, expiration=3600):
-    #     s = Serializer(current_app.config['SECRET_KEY'], expiration)
-    #     return s.dumps({'reset': self.id}).decode('utf-8')
-
-    # def confirm(self, token):
-    #     s = Serializer(current_app.config['SECRET_KEY'])
-    #     try:
-    #         data = s.loads(token.encode('utf-8'))
-    #     except:
-    #         return False
-    #     if data.get('confirm') != self.id:
-    #         return False
-    #     self.confirmed = True
-    #     db.session.add(self)
-    #     return True
-
-    # @staticmethod
-    # def get_token_user(token):
-    #     s = Serializer(current_app.config['SECRET_KEY'])
-    #     try:
-    #         data = s.loads(token)
-    #     except:
-    #         return None
-    #     return User.query.get(data.get('confirm'))
     
-    # @staticmethod
-    # def confirm_reset(token, new_password, confirmOnly=False):
-    #     s = Serializer(current_app.config['SECRET_KEY'])
-    #     try:
-    #         data = s.loads(token.encode('utf-8'))
-    #     except:
-    #         return False
-    #     user = User.query.get(data.get('reset'))
-    #     if user is None:
-    #         return False
-    #     if confirmOnly and user:
-    #         return True
-    #     else:
-    #         user.password = new_password
-    #         if user.role_id == 3:
-    #             user.role_id = 2
-    #             user.confirmed = 1
-            
-    #         if re.fullmatch(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$', new_password) == None:
-    #             raise ValidationError("password doesn't comply with the security strength")
-    #         db.session.add(user)
-    #         return True
-
-        
-    # def generate_auth_token(self, expiration):
-    #     s = Serializer(current_app.config['SECRET_KEY'],
-    #                    expires_in=expiration)
-    #     return s.dumps({'id': self.id}).decode('utf-8')
-
-    # @staticmethod
-    # def verify_auth_token(token):
-    #     s = Serializer(current_app.config['SECRET_KEY'])
-    #     try:
-    #         data = s.loads(token)
-    #     except:
-    #         return None
-    #     return User.query.get(data['id'])
-
-    # def __repr__(self):
-    #     return '<User %r>' % self.first_name    
-
     @staticmethod
     def add_test_user():
         user = User(email  = "test_user@test.com", first_name = "Test" , last_name = "User", password = "test1234", organization = "Test user created in shell", role_id = 2)
@@ -169,30 +89,6 @@ class User (UserMixin, db.Model):
             }
         return json_user
     
-    # def from_json(json_post):
-    #     email = json_post.get('user_email')
-    #     first_name = json_post.get('first_name')
-    #     last_name = json_post.get('last_name')
-    #     password = json_post.get('new_pass')
-
-    #     existing_user = User.query.filter_by(email=email).first()
-
-    #     if existing_user and existing_user.role.id == 2:
-    #         raise ValidationError("This user already exists")
-
-    #     if existing_user and existing_user.role.id == 3:
-    #         raise ValidationError("Bienvenido de vuelta Ya has comprado como anónimo usa la opción: OLVIDÓ LA CONTRASEÑA para crear tu usuario")
-
-    #     if (email is None or email == "") or (first_name is None or first_name=="") or (password is None or password=="") or (last_name is None or last_name== ""):
-    #         raise ValidationError("Some required fields are missing")
-
-    #     if re.fullmatch(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$', password) == None:
-    #         raise ValidationError("password doesn't comply with the security strength")
-        
-    #     if re.fullmatch(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",email) == None:
-    #         raise ValidationError("this is not a valid email")
-
-    #     return User(email = email ,first_name = first_name, last_name = last_name, password = password ,role_id=2 )
     
     @login_manager.user_loader
     def load_user(user_id):
