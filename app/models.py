@@ -94,7 +94,6 @@ class User (UserMixin, db.Model):
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-# mysql+pymysql://root:@localhost/image
 class Image(db.Model):
     __tablename__='images'
     id =  db.Column(db.Integer, primary_key=True)
