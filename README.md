@@ -1,4 +1,4 @@
-# Eager Llama project
+# Image-clasiffier
 
 ## first doc
 
