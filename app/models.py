@@ -129,6 +129,12 @@ class User (UserMixin, db.Model):
         user = User(email  = "test_user@test.com", first_name = "Test" , last_name = "User", password = "test1234", organization = "Test user created in shell", role_id = 2)
         db.session.add(user)
 
+
+    @staticmethod
+    def add_user(email, first, lastname, password):
+        user = User(email  = email, first_name = first , last_name = lastname, password = password, organization = "Test user created in shell", role_id = 2)
+        db.session.add(user)
+
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')

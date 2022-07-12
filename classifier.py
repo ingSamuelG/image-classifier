@@ -1,5 +1,6 @@
 from email.utils import formatdate
 import os
+import re
 from app import create_app, db
 import datetime
 import math
@@ -38,7 +39,7 @@ def createDatabase():
     print('***** Datebase created ****')
 
 @app.cli.command()
-def addTestUser():
+def addFirstTestUser():
     """add a test user"""
     try:
         User.add_test_user()
@@ -47,6 +48,24 @@ def addTestUser():
     except:
         print("Error seeding user into the database")
 
+@app.cli.command()
+@click.argument('email')
+@click.argument('name')
+@click.argument('lastname')
+@click.argument('password')
+def addUser(email,name, lastname, password):
+    """add a user from args email, name, lastName, password all separated by spaces in that order"""
+
+    if re.search("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", email):
+        try:
+            User.add_user(email, name, lastname, password)
+            db.session.commit()
+            print(" User {} {} created with email: {}".format(name, lastname, email))
+        except  Exception as e:
+            print("Error seeding user into the database")
+            print(e)
+    else:
+        print("{} its not a valid email")
 
 @app.cli.command()
 def sroles():
