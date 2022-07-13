@@ -40,6 +40,7 @@ class RateUser (UserMixin, db.Model):
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     password_hash = db.Column(db.String(128))
+    ratings = db.relationship('Image_label', backref='user', cascade = "all,delete, delete-orphan", lazy='dynamic')
 
     def __repr__(self):
         return 'User %r' % self.first_name
@@ -89,7 +90,6 @@ class RateUser (UserMixin, db.Model):
             }
         return json_user
     
-    
     @login_manager.user_loader
     def load_user(user_id):
         return RateUser.query.get(int(user_id))
@@ -122,5 +122,8 @@ class Image(db.Model):
 class Image_label(db.Model):
     __tablename__='image_labels'
     id = db.Column(db.Integer, primary_key=True)
-    images_id= db.Column(db.Integer , db.ForeignKey('images.id'))
-    rating = db.Column(db.Integer)
+    images_id = db.Column(db.Integer , db.ForeignKey('images.id'))
+    user_id = db.Column(db.Integer , db.ForeignKey('rate_users.id'))
+    rating_score = db.Column(db.Integer)
+    created_at =  db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
