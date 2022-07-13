@@ -13,7 +13,7 @@ from .. import db
 @login_required
 def rate():
     form = RateForm()
-    image_wo_rating =  Image.query.filter(~Image.image_label_rating.any()).first()
+    image_wo_rating =  Image.query.filter(~Image.image_label_rating.any()).paginate(page = 1, per_page = 10).query.first()
     if image_wo_rating:
         if form.validate_on_submit():
             label = Image_label(rating = form.radio.data)
