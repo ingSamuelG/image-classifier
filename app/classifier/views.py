@@ -1,5 +1,5 @@
 from email.mime import image
-import imp
+from  sqlalchemy.sql.expression import func
 from flask import render_template, redirect, url_for, abort, flash, request, session,\
     current_app, make_response
 from flask_login import login_required, current_user
@@ -13,7 +13,7 @@ from .. import db
 @login_required
 def rate():
     form = RateForm()
-    image_wo_rating =  Image.query.filter(~Image.image_label_rating.any()).limit(1).first()
+    image_wo_rating =  Image.query.filter(~Image.image_label_rating.any()).order_by(func.rand()).limit(1000).first()
     if image_wo_rating:
         if form.validate_on_submit():
             label = Image_label(rating = form.radio.data)
