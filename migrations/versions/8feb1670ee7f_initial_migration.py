@@ -33,7 +33,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['images_id'], ['images.id'], name=op.f('fk_image_labels_images_id_images')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_image_labels'))
     )
-    op.create_table('users',
+    op.create_table('rate_users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('email', sa.String(length=64), nullable=True),
     sa.Column('role_id', sa.Integer(), nullable=True),

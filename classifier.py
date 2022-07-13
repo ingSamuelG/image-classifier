@@ -6,7 +6,7 @@ import datetime
 import math
 import click
 from decimal import Decimal, localcontext, ROUND_05UP
-from app.models import User, Role
+from app.models import RateUser, Role
 from flask_migrate import Migrate, upgrade
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
@@ -16,7 +16,7 @@ migrate = Migrate(app, db, render_as_batch=True)
 @app.shell_context_processor
 def make_shell_context():
     #assumptions
-    return dict(db=db, User = User)
+    return dict(db=db, User = RateUser)
 
 @app.cli.command()
 def test():
@@ -42,10 +42,11 @@ def createDatabase():
 def addFirstTestUser():
     """add a test user"""
     try:
-        User.add_test_user()
+        RateUser.add_test_user()
         db.session.commit()
         print("email:test_user@test.com password:test1234")
-    except:
+    except Exception as e:
+        print(e)
         print("Error seeding user into the database")
 
 @app.cli.command()
@@ -58,7 +59,7 @@ def addUser(email,name, lastname, password):
 
     if re.search("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", email):
         try:
-            User.add_user(email, name, lastname, password)
+            RateUser.add_user(email, name, lastname, password)
             db.session.commit()
             print(" User {} {} created with email: {}".format(name, lastname, email))
         except  Exception as e:

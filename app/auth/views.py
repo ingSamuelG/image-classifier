@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, abort, flash, request,\
     session
 from flask_login import login_user, logout_user
-from ..models import User
+from ..models import RateUser
 from . import auth
 from .. import db
 from .forms import LoginForm, RegistrationForm
@@ -21,7 +21,7 @@ from .forms import LoginForm, RegistrationForm
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = RateUser.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
             next = request.args.get('next')

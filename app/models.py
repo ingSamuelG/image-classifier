@@ -14,7 +14,7 @@ class Role (db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(64), unique = True)
     slug = db.Column(db.String(64), unique = True)
-    users = db.relationship('User', backref='role', lazy= 'dynamic')
+    users = db.relationship('RateUser', backref='role', lazy= 'dynamic')
 
     @staticmethod
     def insert_roles():
@@ -26,8 +26,8 @@ class Role (db.Model):
     def __repr__(self):
         return 'Role %r' % self.name
 
-class User (UserMixin, db.Model):
-    __tablename__='users'
+class RateUser (UserMixin, db.Model):
+    __tablename__='rate_users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), unique=True, index=True)
     role_id= db.Column(db.Integer , db.ForeignKey('roles.id'))
@@ -46,13 +46,13 @@ class User (UserMixin, db.Model):
     
     @staticmethod
     def add_test_user():
-        user = User(email  = "test_user@test.com", first_name = "Test" , last_name = "User", password = "test1234", organization = "Test user created in shell", role_id = 2)
+        user = RateUser(email  = "test_user@test.com", first_name = "Test" , last_name = "User", password = "test1234", organization = "Test user created in shell", role_id = 2)
         db.session.add(user)
 
 
     @staticmethod
     def add_user(email, first, lastname, password):
-        user = User(email  = email, first_name = first , last_name = lastname, password = password, organization = "Test user created in shell", role_id = 2)
+        user = RateUser(email  = email, first_name = first , last_name = lastname, password = password, organization = "Test user created in shell", role_id = 2)
         db.session.add(user)
 
     @property
@@ -92,7 +92,7 @@ class User (UserMixin, db.Model):
     
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(int(user_id))
+        return RateUser.query.get(int(user_id))
 
 class Image(db.Model):
     __tablename__='images'
