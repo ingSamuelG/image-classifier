@@ -1,4 +1,5 @@
 from email.mime import image
+from numpy import imag
 from  sqlalchemy.sql.expression import func
 from flask import render_template, redirect, url_for, abort, flash, request, session,\
     current_app, make_response
@@ -7,13 +8,26 @@ from . import classifier
 from ..models import Image_label,Image
 from .form import RateForm
 from .. import db
+import random
 
 
 @classifier.route('/rate', methods=['GET', 'POST'])
 @login_required
 def rate():
     form = RateForm()
-    image_wo_rating =  Image.query.filter(~Image.image_label_rating.any()).limit(1000).order_by(func.rand()).first()
+    all =  Image.query.filter(~Image.image_label_rating.any()).limit(1000)
+    
+    ids = []
+    for image in all:
+        ids.append(image.id)
+    
+    ramdom = random.choices(ids, k=1)[0]
+    for image in all:
+        if image.id == ramdom:
+            image_wo_rating = image
+
+    print(image_wo_rating)
+
     if image_wo_rating:
         if form.validate_on_submit():
             label = Image_label(rating = form.radio.data)
