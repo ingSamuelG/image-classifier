@@ -46,23 +46,26 @@
                         Images
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li class="dropdown-submenu"><a class="dropdown-item"
-                                href="{{ url_for('classifier.rate') }}">Rate</a>
+                        <li><a class="dropdown-item" href="{{url_for('classifier.rate')}}">
+                                Rate</a>
                         </li>
-                        <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="">other route</a>
+                        <li><a class="dropdown-item" href="{{url_for('examples.total')}}">Rate summaries</a>
                         </li>
-                        {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
-                        </li>
-                        {% endif %}
-                        <!-- <li class="nav-item">
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+                </li>
+                {% endif %}
+                <!-- <li class="nav-item">
                     <a class="nav-link disabled">Disabled</a>
                 </li> -->
-                    </ul>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
                 </li>
+            </ul>
+
         </div>
     </div>
 </nav>
