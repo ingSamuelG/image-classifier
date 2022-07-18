@@ -63,8 +63,6 @@ def total():
     result_m2 = Image.query.filter(Image.id.in_(ramdom_m2)).all()
     result_m3 = Image.query.filter(Image.id.in_(ramdom_m3)).all()
 
-    print(result_3)
-
     return render_template('examples/summaries.html' , result_3 = result_3, result_2 = result_2, result_1 = result_1,result_0 = result_0, result_m1 = result_m1, result_m2 = result_m2, result_m3 = result_m3 )
     
 
