@@ -48,4 +48,7 @@ def create_app(config_name):
     from .classifier import classifier as classifier_blueprint
     app.register_blueprint(classifier_blueprint, url_prefix='/classifier')
 
+    from .examples import examples as examples_blueprint
+    app.register_blueprint(examples_blueprint, url_prefix='/examples')
+
     return app

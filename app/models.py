@@ -127,3 +127,12 @@ class Image_label(db.Model):
     rating_score = db.Column(db.Integer)
     created_at =  db.Column(db.DateTime, default=datetime.datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
+
+class Image_Rating(db.Model):
+    __tablename__='image_ratings'
+    id = db.Column(db.Integer, primary_key=True)
+    image_id = db.Column(db.Integer , db.ForeignKey('images.id'))
+    rating_score = db.Column(db.Integer)
+    created_at =  db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
