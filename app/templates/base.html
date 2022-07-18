@@ -53,6 +53,9 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                </li>
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
@@ -61,9 +64,6 @@
                 <!-- <li class="nav-item">
                     <a class="nav-link disabled">Disabled</a>
                 </li> -->
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
-                </li>
             </ul>
 
         </div>
