@@ -130,23 +130,23 @@ when you are in your virtual environment with all the dependencies installed and
 deploy runs all the migrations when you have a brand new databese
 
 ```bash
-(venv)flask deploy
+flask deploy
 ```
 
 sroles seeds defaults roles for the user should be used before creating any user
 
 ```bash
-(venv)flask sroles
+flask sroles
 ```
 
 addfirsttestuser add a test user with email test_user@test.com and a default password
 
 ```bash
-(venv)flask addfirsttestuser
+flask addfirsttestuser
 ```
 
 adduser add a user from pased args email, name, lastName, password separeted by spaces
 
 ```bash
-(venv)flask adduser myname@gmail.com Pedro Gonzales SuPerPass!*
+flask adduser myname@gmail.com Pedro Gonzales SuPerPass!*
 ```
