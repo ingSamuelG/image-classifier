@@ -40,18 +40,10 @@
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 {% if current_user.is_authenticated %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Images
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{url_for('classifier.rate')}}">
-                                Rate</a>
-                        </li>
-                        <li><a class="dropdown-item" href="{{url_for('examples.total')}}">Rate summaries</a>
-                        </li>
-                    </ul>
+                <li><a class="nav-link" href="{{url_for('classifier.rate')}}">
+                        Rate</a>
+                </li>
+                <li><a class="nav-link" href="{{url_for('examples.total')}}">Examples</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
