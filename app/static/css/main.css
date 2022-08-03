@@ -57,3 +57,13 @@
 .thump:hover {
   border: 2px solid #212529;
 }
+
+.chart {
+  min-width: 1080px;
+  min-height: 600px;
+}
+
+.hg {
+  font-weight: bold;
+  font-size: 0.95rem;
+}

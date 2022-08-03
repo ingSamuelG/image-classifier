@@ -45,6 +45,29 @@
                 </li>
                 <li><a class="nav-link" href="{{url_for('examples.total')}}">Examples</a>
                 </li>
+                {% if current_user.role_id == 1 %}
+                <li><a class="nav-link" href="{{url_for('classifier.rate_performance', id='1')}}">
+                        Daily Performance</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Examples per
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{url_for('examples.total')}}">Only old
+                                ratings</a>
+                        </li>
+                        <li><a class="dropdown-item"
+                                href="{{url_for('examples.showType', type='user_id', id='1')}}">Only user 1
+                                ratings</a>
+                        </li>
+                        <li><a class="dropdown-item"
+                                href="{{url_for('examples.showType', type='combined',  id='all')}}">All
+                                ratings</a></li>
+                    </ul>
+                </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
                 </li>

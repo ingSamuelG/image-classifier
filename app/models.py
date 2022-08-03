@@ -122,11 +122,24 @@ class Image(db.Model):
 class Image_label(db.Model):
     __tablename__='image_labels'
     id = db.Column(db.Integer, primary_key=True)
-    images_id = db.Column(db.Integer , db.ForeignKey('images.id'))
+    image_id = db.Column(db.Integer , db.ForeignKey('images.id'))
     user_id = db.Column(db.Integer , db.ForeignKey('rate_users.id'))
     rating_score = db.Column(db.Integer)
     created_at =  db.Column(db.DateTime, default=datetime.datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+
+    def to_json(self):
+        Json_image_label= {
+            "id": self.id,
+            "image_id": self.image_id,
+            "user_id": self.user_id,
+            "rating_score":self.rating_score,
+            "created_at": {"day": self.created_at.day, "month":self.created_at.month, "year": self.created_at.year, "hour":self.created_at.hour, "minute": self.created_at.minute, "seconds": self.created_at.second},
+            "updated_at": {"day": self.updated_at.day, "month":self.updated_at.month, "year": self.updated_at.year, "hour":self.updated_at.hour, "minute": self.updated_at.minute, "seconds": self.updated_at.second },
+
+        }
+        return Json_image_label
+
 
 
 class Image_Rating(db.Model):
