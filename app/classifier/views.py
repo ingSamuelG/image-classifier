@@ -106,4 +106,6 @@ def rate_performance(id):
 
             print(total_x_hour)
 
-    return render_template('classifier/performance.html' , form = form, date = date, id= id, ratings= ratings, total_x_hour = total_x_hour, dif = dif, amount = amount, describe_ratings = describe_ratings, user = user, query = query)
+        return render_template('classifier/performance.html' , form = form, date = date, id= id, ratings= ratings, total_x_hour = total_x_hour, dif = dif, amount = amount, describe_ratings = describe_ratings, user = user, query = query)
+    
+    return render_template('classifier/performance.html' , form = form, date = date, id= id)
