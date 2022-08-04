@@ -60,10 +60,25 @@
 
 .chart {
   min-width: 1080px;
-  min-height: 600px;
+  min-height: 400px;
 }
 
 .hg {
   font-weight: bold;
-  font-size: 0.95rem;
+}
+
+.small {
+  font-size: 0.6rem;
+}
+
+.a_non_text_decorator:link {
+  text-decoration: none;
+}
+
+.a_non_text_decorator:active {
+  text-decoration: none;
+}
+
+.a_non_text_decorator:visited {
+  text-decoration: none;
 }

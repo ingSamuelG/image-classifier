@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf%}
+
+{% block title %}Rate page{% endblock %}
+
+{% block page_content %}
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class=" container">
+                <div class="row">
+                    <div class="col">
+                        <form action="{{url_for('classifier.rate_performance', id = id) }}" method="post">
+                            {{form.hidden_tag()}}
+                            <h6>{{form.date.label}}</h6>
+                            {{form.date}}
+                            {{form.checkBtn(class_="btn btn-primary")}}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if query %}
+        <div class="col mt-3">
+            <div class="container d-flex justify-content-center align-items-center">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <p class="hg">User:</p>
+                                </div>
+                                <div class="col">
+                                    <p>{{ user.first_name }} {{ user.last_name }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p class="hg">Images per hour:</p>
+                                </div>
+                                <div class="col">
+                                    {{ total_x_hour}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p class="hg">Elapsed time in hours:</p>
+                                </div>
+                                <div class="col">
+                                    {{ dif }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p class="hg">Images rated</p>
+                                </div>
+                                <div class="col">
+                                    {{ amount }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p class="hg">Rated -3:</p>
+                                </div>
+                                <div class="col">
+                                    {{ describe_ratings['rated_m3'] }}
+                                </div>
+                                <div class="col">
+                                    <p class="hg">Rated -2:</p>
+                                </div>
+                                <div class="col">
+                                    {{ describe_ratings['rated_m2'] }}
+                                </div>
+                                <div class="col">
+                                    <p class="hg">Rated -1:</p>
+                                </div>
+                                <div class="col">
+                                    {{ describe_ratings['rated_m1'] }}
+                                </div>
+                                <div class="col">
+                                    <p class="hg">Rated 0:</p>
+                                </div>
+                                <div class="col">
+                                    {{ describe_ratings['rated_0'] }}
+                                </div>
+                                <div class="col">
+                                    <p class="hg">Rated 1:</p>
+                                </div>
+                                <div class="col">
+                                    {{ describe_ratings['rated_1'] }}
+                                </div>
+                                <div class="col">
+                                    <p class="hg">Rated 2:</p>
+                                </div>
+                                <div class="col">
+                                    {{ describe_ratings['rated_2'] }}
+                                </div>
+                                <div class="col">
+                                    <p class="hg">Rated 3:</p>
+                                </div>
+                                <div class="col">
+                                    {{ describe_ratings['rated_3'] }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div id="timeline" class="chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {%else%}
+        <div class="col mt-5">
+            <div class="container d-flex justify-content-center align-items-center">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>No results for {{date}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+{{super()}}
+{% if date %}
+<script type="text/javascript">
+    const all_ratings = {{ ratings | tojson | safe }}
+
+    const test = all_ratings.map(rt => {
+        return [`image id:${rt.image_id} rating ${rt.rating_score}`, new Date(rt.created_at.year, rt.created_at.month - 1, rt.created_at.day, rt.created_at.hour, rt.created_at.minute, rt.created_at.seconds), new Date(rt.created_at.year, rt.created_at.month - 1, rt.created_at.day, rt.created_at.hour, rt.created_at.minute, rt.created_at.seconds)]
+    })
+
+    console.log(test)
+</script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['timeline'] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var container = document.getElementById('timeline');
+        var chart = new google.visualization.Timeline(container);
+        var dataTable = new google.visualization.DataTable();
+
+        dataTable.addColumn({ type: 'string', id: 'image id' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
+        dataTable.addRows(test);
+
+        // dataTable.addRows([
+        //     ['Washington', new Date(1789, 3, 30), new Date(1797, 2, 4)],
+        //     ['Adams', new Date(1797, 2, 4), new Date(1801, 2, 4)],
+        //     ['Jefferson', new Date(1801, 2, 4), new Date(1809, 2, 4)]]);
+
+        chart.draw(dataTable);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['timeline'] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var container = document.getElementById('timeline_{{key_date}}');
+        var chart = new google.visualization.Timeline(container);
+        var dataTable = new google.visualization.DataTable();
+
+        dataTable.addColumn({ type: 'string', id: 'image id' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
+        dataTable.addRows({{ key_date }});
+
+    // dataTable.addRows([
+    //     ['Washington', new Date(1789, 3, 30), new Date(1797, 2, 4)],
+    //     ['Adams', new Date(1797, 2, 4), new Date(1801, 2, 4)],
+    //     ['Jefferson', new Date(1801, 2, 4), new Date(1809, 2, 4)]]);
+
+    chart.draw(dataTable);
+    }
+</script>
+{% endif %}
+{% endblock %}
