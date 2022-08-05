@@ -6,7 +6,7 @@ from . import classifier
 import calendar
 from ..models import Image_label,Image, RateUser
 from .form import RateForm
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from .. import db
 import random
 
@@ -83,6 +83,7 @@ def rate():
 @classifier.route('/performance/user/<id>/', methods=['GET', 'POST'])
 @login_required
 def rate_performance(id):
+    DEFUALT_TIME_TO_RATE = timedelta(seconds=1)
     year = request.args.get("year") 
     month = request.args.get("month")
     day= request.args.get("day")
@@ -120,7 +121,7 @@ def rate_performance(id):
         amount = len(query)
 
         total_x_hour = (amount / dif.total_seconds()) * 3600
-        yearly_stats[str(eval_year)] = {"ratings": describe_ratings, "Images rated": amount, "Images per hour:": total_x_hour}
+        yearly_stats[str(eval_year)] = {"ratings": describe_ratings, "Images rated": amount, "Images per hour": total_x_hour}
 
     if not month and not day and not year:
         display_stats = yearly_stats
@@ -148,7 +149,7 @@ def rate_performance(id):
                 has_chart = True
             else:
                 has_chart = False
-            monthly_stats[month_name] = {"ratings": describe_ratings, "Images rated": amount,"Images per hour:": total_x_hour, "data": ratings, "has_chart": has_chart, "month_num": r ,"daysInMonth": daysInMonth}
+            monthly_stats[month_name] = {"ratings": describe_ratings, "Images rated": amount,"Images per hour": total_x_hour, "data": ratings, "has_chart": has_chart, "month_num": r ,"daysInMonth": daysInMonth}
         
         display_stats = monthly_stats
         display_chart = True
@@ -169,7 +170,6 @@ def rate_performance(id):
 
             query = Image_label.query.filter(and_(and_(func.date(Image_label.created_at) >= start_date),\
                                                 func.date(Image_label.created_at) < end_date),Image_label.user_id == int(id)).order_by(Image_label.created_at.asc()).all()
-                                            
 
             idle = 0
             i = 0
@@ -180,13 +180,12 @@ def rate_performance(id):
                     dif = next.created_at - rt.created_at
                     
                     if i == 0 and dif != 0:
-                        idle = dif
+                        idle = (dif - DEFUALT_TIME_TO_RATE) 
                     if i > 0 and dif != 0:
-                        idle += dif
+                        idle += (dif- DEFUALT_TIME_TO_RATE) 
                     i+=1
                 else:
                     i+=1
-            
             
 
             describe_ratings = describe_rates(query)[1]
@@ -211,9 +210,7 @@ def rate_performance(id):
                 total_x_hour_w_idle = 0
             
 
-            
-            
-            daily_stats[str(d)]  = {"ratings": describe_ratings, "Images rated": amount,"Images per hour in a full day":total_x_hour ,"Images per hour without the idle time": total_x_hour_w_idle, "Idle time in the day:": idle ,"data": ratings,"has_chart": has_chart}
+            daily_stats[str(d)]  = {"ratings": describe_ratings, "Images rated": amount,"Images per hour from the first rated to the last":total_x_hour ,"Images per hour without the idle time": total_x_hour_w_idle, "Idle time in rating cycle thru the day": idle ,"data": ratings,"has_chart": has_chart}
         
         display_chart = True
         display_stats = daily_stats
