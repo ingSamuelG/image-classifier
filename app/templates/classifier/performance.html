@@ -45,35 +45,46 @@
                                 <div class="col">
                                     <div class="container d-flex justify-content-center align-items-center">
                                         <div class="row">
+                                            <div class="col-6">
+                                                <button id="btn_{{key_date}}" type="button" class="btn btn-primary">Show
+                                                    Chart</button>
+                                            </div>
                                             <div class="col">
-                                                <button id="btn_{{key_date}}" type="button"
-                                                    class="btn btn-primary">Show Chart</button>
+                                                <div id="LoadingImage_{{key_date}}" class="lds-ring">
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                    <div></div>
+                                                </div>
+                                            </div>
+                                            <div class="col">
                                                 <div id="timeline_{{key_date}}" class="chart"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                {%endif%}
-                                {%endif%}
-                                {% elif key not in ['has_chart', 'daysInMonth', 'month_num'] %}
-                                <div class="col">
-                                    <p class="hg">{{key}}:</p>
-                                </div>
-                                <div class="col">
-                                    <p>{{r_values}}</p>
-                                </div>
-
-                                {%endif%}
                             </div>
-                            {% endfor %}
+                            {%endif%}
+                            {%endif%}
+                            {% elif key not in ['has_chart', 'daysInMonth', 'month_num'] %}
+                            <div class="col">
+                                <p class="hg">{{key}}:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{r_values}}</p>
+                            </div>
+
+                            {%endif%}
                         </div>
+                        {% endfor %}
                     </div>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
-
     </div>
+
+</div>
 </div>
 {% endblock %}
 
@@ -86,9 +97,15 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#btn_{{key_date}}").on("click", function () {
-            drawChart_{{ key_date }}();
-  	    var t = document.getElementById("timeline_{{key_date}}");
-            t.classList.toggle("hide");
+            var load = document.getElementById("LoadingImage_{{key_date}}");
+            var ti = document.getElementById("timeline_{{key_date}}");
+            load.classList.add("show");
+            setTimeout(function () {
+                drawChart_{{ key_date }}()
+                load.classList.remove('show')
+                ti.classList.add("show");
+            }, 0);
+
         });
     });
 </script>
