@@ -171,6 +171,24 @@ def rate_performance(id):
                                                 func.date(Image_label.created_at) < end_date),Image_label.user_id == int(id)).order_by(Image_label.created_at.asc()).all()
                                             
 
+            idle = 0
+            i = 0
+            amount = len(query)
+            for rt in query:
+                if amount > i+1:
+                    next = query[i+1]
+                    dif = next.created_at - rt.created_at
+                    
+                    if i == 0 and dif != 0:
+                        idle = dif
+                    if i > 0 and dif != 0:
+                        idle += dif
+                    i+=1
+                else:
+                    i+=1
+            
+            
+
             describe_ratings = describe_rates(query)[1]
             ratings = describe_rates(query)[0]
 
@@ -179,9 +197,23 @@ def rate_performance(id):
             else:
                 has_chart = False
 
-            amount = len(query)
-            total_x_hour = (amount / 86400 ) * 3600
-            daily_stats[str(d)]  = {"ratings": describe_ratings, "Images rated": amount,"Images per hour:": total_x_hour,"data": ratings,"has_chart": has_chart}
+            if query:
+                first_date = query[0].created_at
+                last_date = end_date
+                dif = last_date - first_date
+                
+                total_x_hour = (amount / dif.total_seconds() ) * 3600
+                total_x_hour_w_idle = (amount / (dif.total_seconds() - idle.total_seconds())) * 3600
+                # amount = len(query)
+                # total_x_hour = (amount / 86400 ) * 3600
+            else:
+                total_x_hour = (amount / 86400 ) * 3600
+                total_x_hour_w_idle = 0
+            
+
+            
+            
+            daily_stats[str(d)]  = {"ratings": describe_ratings, "Images rated": amount,"Images per hour in a full day":total_x_hour ,"Images per hour without the idle time": total_x_hour_w_idle, "Idle time in the day:": idle ,"data": ratings,"has_chart": has_chart}
         
         display_chart = True
         display_stats = daily_stats
@@ -190,15 +222,6 @@ def rate_performance(id):
         w_month = month
 
     return render_template('classifier/performance.html', display_stats = display_stats, display_chart = display_chart , w_year = w_year, w_month = w_month)
-
-
-    
-    # query = Image_label.query.filter(and_(and_(func.date(Image_label.created_at) >= date),\
-    #                                           func.date(Image_label.created_at) <= date),Image_label.user_id == int(id)).order_by(Image_label.created_at.asc()).all()
-    
-    # print(query)
-    
-    # return render_template('classifier/performance.html', id= id)
 
 
 # @classifier.route('/performance/user/<id>', methods=['GET', 'POST'])
