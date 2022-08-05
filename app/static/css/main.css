@@ -61,6 +61,11 @@
 .chart {
   min-width: 1080px;
   min-height: 400px;
+  visibility: hidden;
+}
+
+.hide {
+  visibility: visible;
 }
 
 .hg {

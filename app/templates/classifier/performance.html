@@ -46,6 +46,8 @@
                                     <div class="container d-flex justify-content-center align-items-center">
                                         <div class="row">
                                             <div class="col">
+                                                <button id="btn_{{key_date}}" type="button"
+                                                    class="btn btn-primary">Show Chart</button>
                                                 <div id="timeline_{{key_date}}" class="chart"></div>
                                             </div>
                                         </div>
@@ -77,7 +79,20 @@
 
 {% block scripts %}
 {{super()}}
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['timeline'] });
+</script>
 {% for key_date, values in display_stats.items() %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btn_{{key_date}}").on("click", function () {
+            drawChart_{{ key_date }}();
+  	    var t = document.getElementById("timeline_{{key_date}}");
+            t.classList.toggle("hide");
+        });
+    });
+</script>
+
 
 {% for key, r_values in values.items() %}
 {% if display_chart and values.get('has_chart') %}
@@ -95,9 +110,8 @@
 </script>
 
 <script type="text/javascript" defer>
-    google.charts.load('current', { 'packages': ['timeline'] });
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
+
+    function drawChart_{{ key_date }}() {
         var container = document.getElementById('timeline_{{key_date}}');
         var chart = new google.visualization.Timeline(container);
         var dataTable = new google.visualization.DataTable();
@@ -139,9 +153,8 @@
 
 </script>
 <script type="text/javascript" defer>
-    google.charts.load('current', { 'packages': ['timeline'] });
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
+
+    function drawChart_{{ key_date }}() {
         var container = document.getElementById('timeline_{{key_date}}');
         var chart = new google.visualization.Timeline(container);
         var dataTable = new google.visualization.DataTable();
