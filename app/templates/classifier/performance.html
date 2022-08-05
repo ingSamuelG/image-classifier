@@ -63,28 +63,28 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            {%endif%}
-                            {%endif%}
-                            {% elif key not in ['has_chart', 'daysInMonth', 'month_num'] %}
-                            <div class="col">
-                                <p class="hg">{{key}}:</p>
-                            </div>
-                            <div class="col">
-                                <p>{{r_values}}</p>
-                            </div>
 
-                            {%endif%}
+                                {%endif%}
+                                {%endif%}
+                                {% elif key not in ['has_chart', 'daysInMonth', 'month_num'] %}
+                                <div class="col">
+                                    <p class="hg">{{key}}:</p>
+                                </div>
+                                <div class="col">
+                                    <p>{{r_values}}</p>
+                                </div>
+
+                                {%endif%}
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
-    </div>
 
-</div>
+    </div>
 </div>
 {% endblock %}
 

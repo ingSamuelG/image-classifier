@@ -69,7 +69,7 @@
 }
 
 .show {
-  visibility: visible;
+  visibility: visible !important;
 }
 
 .hg {
