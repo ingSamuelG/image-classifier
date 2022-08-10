@@ -28,15 +28,17 @@
                             {{form.hidden_tag()}}
                             <div class="container">
                                 <div class="row">
-                                    <div class="col">
-                                        <h6>{{form.contentType.label}}</h6>
-                                    </div>
-                                    <div class="col d-flex justify-content-start">
+                                    <div class="col d-flex">
+                                        <h6 style="margin-right: 15px;">{{form.contentType.label}}</h6>
                                         {{form.contentType}}
                                     </div>
+
+                                </div>
+                                <div class="row mt-5">
+
                                 </div>
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col-5">
                                         <h6>{{form.radio.label}}</h6>
                                     </div>
                                     <div class="col-12">
