@@ -1,4 +1,3 @@
-from email.utils import formatdate
 import os
 import re
 from app import create_app, db

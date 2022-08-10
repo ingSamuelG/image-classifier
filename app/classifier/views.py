@@ -69,7 +69,7 @@ def rate():
 
     if image_wo_rating:
         if form.validate_on_submit():
-            label = Image_label(rating_score = form.radio.data, user_id = current_user.id)
+            label = Image_label(rating_score = form.radio.data, inappropriate_ct = form.contentType.data, user_id = current_user.id)
             image_wo_rating.image_label_rating.append(label)
             db.session.add(image_wo_rating)
             db.session.commit()

@@ -125,6 +125,7 @@ class Image_label(db.Model):
     image_id = db.Column(db.Integer , db.ForeignKey('images.id'))
     user_id = db.Column(db.Integer , db.ForeignKey('rate_users.id'))
     rating_score = db.Column(db.Integer)
+    inappropriate_ct = db.Column(db.Boolean, default = True)
     created_at =  db.Column(db.DateTime, default=datetime.datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 

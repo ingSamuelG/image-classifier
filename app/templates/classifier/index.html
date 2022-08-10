@@ -26,6 +26,8 @@
                     <div class="col">
                         <form action="{{url_for('classifier.rate')}}" method="post">
                             {{form.hidden_tag()}}
+                            <h6>{{form.contentType.label}}</h6>
+                            {{form.contentType}}
                             <h6>{{form.radio.label}}</h6>
                             {% for subfield in form.radio %}
                             <div class="form-check form-check-inline">
