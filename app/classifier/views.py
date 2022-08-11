@@ -83,7 +83,7 @@ def rate():
 @classifier.route('/performance/user/<id>/', methods=['GET', 'POST'])
 @login_required
 def rate_performance(id):
-    DEFUALT_TIME_TO_RATE = timedelta(seconds=1)
+    DEFUALT_TIME_TO_RATE = timedelta(seconds=2)
     year = request.args.get("year") 
     month = request.args.get("month")
     day= request.args.get("day")
