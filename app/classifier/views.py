@@ -172,7 +172,7 @@ def rate_performance(id):
             query = Image_label.query.filter(and_(and_(func.date(Image_label.created_at) >= start_date),\
                                                 func.date(Image_label.created_at) < end_date),Image_label.user_id == int(id)).order_by(Image_label.created_at.asc()).all()
 
-            idle = 0
+            idle = timedelta(seconds=0)
             i = 0
             amount = len(query)
             for rt in query:
@@ -188,10 +188,10 @@ def rate_performance(id):
                         idle +=  timedelta(seconds=0)
                     i+=1
                 else:
-                    if not isinstance(idle,int):
-                        idle =  timedelta(seconds=0)
-                    else:
-                        idle +=  timedelta(seconds=0)
+                    # if not isinstance(idle,int):
+                    #     idle =  timedelta(seconds=0)
+                    # else:
+                    #     idle +=  timedelta(seconds=0)
                     i+=1
             
 
