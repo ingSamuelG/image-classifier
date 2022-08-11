@@ -88,6 +88,7 @@ def rate_performance(id):
     month = request.args.get("month")
     day= request.args.get("day")
 
+    w_day = False
     w_year = False
     w_month = False
     yearly_stats ={}
@@ -182,9 +183,10 @@ def rate_performance(id):
                     if i == 0 and dif != 0:
                         idle = (dif - DEFUALT_TIME_TO_RATE) 
                     if i > 0 and dif != 0:
-                        idle += (dif- DEFUALT_TIME_TO_RATE) 
+                        idle += (dif - DEFUALT_TIME_TO_RATE) 
                     i+=1
                 else:
+                    idle =DEFUALT_TIME_TO_RATE
                     i+=1
             
 
@@ -218,7 +220,7 @@ def rate_performance(id):
         w_year = int(year)
         w_month = month
 
-    return render_template('classifier/performance.html', display_stats = display_stats, display_chart = display_chart , w_year = w_year, w_month = w_month)
+    return render_template('classifier/performance.html', display_stats = display_stats, display_chart = display_chart , w_year = w_year, w_month = w_month, w_day = w_day)
 
 
 # @classifier.route('/performance/user/<id>', methods=['GET', 'POST'])
