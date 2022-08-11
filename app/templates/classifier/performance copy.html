@@ -182,3 +182,21 @@
 </script>
 {% endif %}
 {% endblock %}
+
+<div class="col">
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="row">
+            <div class="col">
+                <div id="LoadingImage_{{key_date}}" class="lds-ring">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div class="col">
+                <div id="timeline_{{key_date}}" class="chart"></div>
+            </div>
+        </div>
+    </div>
+</div>

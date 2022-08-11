@@ -94,6 +94,7 @@ def rate_performance(id):
     yearly_stats ={}
     monthly_stats = {}
     daily_stats = {}
+    hourly_stats = {}
     
     if not year:
         oldest_rating= Image_label.query.filter(Image_label.user_id == int(id)).order_by(Image_label.created_at.asc()).first()
@@ -156,7 +157,7 @@ def rate_performance(id):
         display_chart = True
         w_year = int(year)
     
-    if year and month:
+    if year and month and not day:
         datetime_object = datetime.strptime(month, "%B")
         month_num = datetime_object.month
         daysInMonth= calendar.monthrange(int(year), month_num)[1]
@@ -224,7 +225,83 @@ def rate_performance(id):
         # start_date = datetime(int(year) , r, 1)
         w_year = int(year)
         w_month = month
+    
+    if year and month and day:
+        for hour in range(0, 24):
+            datetime_object = datetime.strptime(month, "%B")
+            month_num = datetime_object.month
+            # daysInMonth= calendar.monthrange(int(year), month_num)[1]
 
+            start_date = datetime(int(year) , month_num, int(day), hour) 
+
+            if hour < 23:
+                end_date = datetime(int(year) , month_num, int(day), hour+1)
+            else:
+                start_date = datetime(int(year) , month_num, int(day), 23) 
+                end_date = datetime(int(year) , month_num, int(day)+1, 0)
+            
+            
+            query = Image_label.query.filter(and_(and_(Image_label.created_at >= start_date,Image_label.created_at < end_date)),Image_label.user_id == int(id)).order_by(Image_label.created_at.asc()).all()
+
+            idle = timedelta(seconds=0)
+            hour_time= timedelta(hours=1)
+            i = 0
+            amount = len(query)
+            for rt in query:
+                if amount > i+1:
+                    next = query[i+1]
+                    dif = next.created_at - rt.created_at
+                    
+                    if i == 0 and dif != 0:
+                        idle = (dif - DEFUALT_TIME_TO_RATE) 
+                    elif i > 0 and dif != 0:
+                        idle += (dif - DEFUALT_TIME_TO_RATE)
+                    else:
+                        idle +=  timedelta(seconds=0)
+                    i+=1
+                else:
+                    # if not isinstance(idle,int):
+                    #     idle =  timedelta(seconds=0)
+                    # else:
+                    #     id
+                    i+=1
+
+            describe_ratings = describe_rates(query)[1]
+            ratings = describe_rates(query)[0]
+
+            elapsed_time = hour_time - idle
+            if query:
+                first_date = query[0].created_at
+                last_date = end_date
+                dif = last_date - first_date
+                print("first_date :{} dif: {}".format(first_date,dif.total_seconds()))
+                total_x_hour = (amount / dif.total_seconds() ) * 3600
+                total_x_hour_w_idle = (amount / (dif.total_seconds() - idle.total_seconds())) * 3600
+                
+                # amount = len(query)
+                # total_x_hour = (amount / 86400 ) * 3600
+            else:
+                total_x_hour = (amount / 3600 )
+                total_x_hour_w_idle = 0
+
+            describe_ratings = describe_rates(query)[1]
+            ratings = describe_rates(query)[0]
+
+            if ratings:
+                has_chart = True
+            else:
+                has_chart = False
+
+
+
+            hourly_stats[str(hour)]  = {"ratings": describe_ratings,"Images rated x elapsed time": "{} x {}".format(amount, elapsed_time),"Images per hour from the first rated to the last": total_x_hour ,"Images per hour without the idle time": total_x_hour_w_idle, "Idle time in rating cycle thru the hour": idle ,"data": ratings,"has_chart": has_chart}
+        
+        w_year = int(year)
+        w_month = month
+        w_day = day
+        display_chart =  True
+        display_stats = hourly_stats
+        
     return render_template('classifier/performance.html', display_stats = display_stats, display_chart = display_chart , w_year = w_year, w_month = w_month, w_day = w_day)
 
 

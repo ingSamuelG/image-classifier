@@ -10,21 +10,40 @@
             <div class="container">
                 {% for key_date, values in display_stats.items() %}
                 <div class="row border">
-                    <div class="col-12">
+                    <div class="col-3">
                         {% if w_year and not w_month %}
                         <a class="a_non_text_decorator"
                             href="{{url_for('classifier.rate_performance', id='1', year=w_year, month=key_date)}}">
                             <h4>{{w_year}} {{key_date}}:</h4>
                         </a>
-                        {%elif w_month and w_year %}
-                        <h4>{{w_month}}, {{key_date}} of {{w_year}}:</h4>
+                        {%elif w_month and w_year and not w_day %}
+                        <a class="a_non_text_decorator"
+                            href="{{url_for('classifier.rate_performance', id='1', year=w_year, month=w_month, day=key_date )}}">
+                            <h4>{{w_month}}, {{key_date}} of {{w_year}}:</h4>
+                        </a>
+                        {%elif w_month and w_year and w_day%}
+                        <h4>{{w_month}}, {{w_day}} of {{w_year}} {{key_date}}:00:00 hour:</h4>
                         {% else %}
                         <a class="a_non_text_decorator"
-                            href="{{url_for('classifier.rate_performance', id='1', year=key_date)}}">
+                            href="{{url_for('classifier.rate_performance', id='1', year=key_date )}}">
                             <h4>{{key_date}}</h4>
                         </a>
                         {%endif%}
                     </div>
+                    {% if values.get('has_chart') %}
+                    {% if display_chart %}
+                    <div class="col-8">
+                        <button id="btn_{{key_date}}" type="button" class="btn btn-primary btn-sm"
+                            data-bs-toggle="modal" data-bs-target="#Modal_{{key_date}}">Show
+                            Chart</button>
+                    </div>
+                    {% else %}
+                    <div class="col-8"></div>
+                    {%endif%}
+                    {% else %}
+                    <div class="col-8"></div>
+                    {%endif%}
+
                     <div class="col">
                         <div class="container">
 
@@ -42,28 +61,32 @@
                                 {% elif key == 'data' %}
                                 {% if values.get('has_chart') %}
                                 {% if display_chart %}
-                                <div class="col">
-                                    <div class="container d-flex justify-content-center align-items-center">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <button id="btn_{{key_date}}" type="button" class="btn btn-primary">Show
-                                                    Chart</button>
+                                <div class="modal fade" id="Modal_{{key_date}}" tabindex="-1"
+                                    aria-labelledby="Modal_{{key_date}}Label" aria-hidden="true">
+                                    <div class="modal-dialog modal-fullscreen">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="Modal_{{key_date}}Label">{{key_date}} chart
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
                                             </div>
-                                            <div class="col">
+                                            <div class="modal-body">
                                                 <div id="LoadingImage_{{key_date}}" class="lds-ring">
                                                     <div></div>
                                                     <div></div>
                                                     <div></div>
                                                     <div></div>
                                                 </div>
-                                            </div>
-                                            <div class="col">
                                                 <div id="timeline_{{key_date}}" class="chart"></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                                 {%endif%}
                                 {%endif%}
                                 {% elif key not in ['has_chart', 'daysInMonth', 'month_num'] %}
@@ -76,6 +99,7 @@
 
                                 {%endif%}
                             </div>
+
                             {% endfor %}
                         </div>
                     </div>
@@ -117,9 +141,9 @@
 
 {%if w_month %}
 <script type="text/javascript" defer>
-    var values = {{ r_values | tojson | safe }}
+    var values_{{ key_date }} = {{ r_values | tojson | safe }}
 
-    var timeline_{{ key_date }} = values.map(rt => {
+    var timeline_{{ key_date }} = values_{{ key_date }}.map(rt => {
         return ["Images", `image id:${rt.image_id} rating ${rt.rating_score}`, new Date(rt.created_at.year, rt.created_at.month - 1, rt.created_at.day, rt.created_at.hour, rt.created_at.minute, rt.created_at.seconds), new Date(rt.created_at.year, rt.created_at.month - 1, rt.created_at.day, rt.created_at.hour, rt.created_at.minute, rt.created_at.seconds)]
     })
 
@@ -144,6 +168,8 @@
             groupByRowLabel: false,
             showRowLabels: false
         },
+    width: '1000',
+        height: '500',
     };
 
     chart.draw(dataTable, options);
@@ -160,9 +186,9 @@
 
 
 <script type="text/javascript" defer>
-    var values = {{ r_values | tojson | safe }}
+    var values_{{ key_date }} = {{ r_values | tojson | safe }}
 
-    var test = values.map(rt => {
+    var timeline_{{ key_date }} = values_{{ key_date }}.map(rt => {
         return ["Images", `image id:${rt.image_id} rating ${rt.rating_score}`, new Date(rt.created_at.year, rt.created_at.month - 1, rt.created_at.day, rt.created_at.hour, rt.created_at.minute, rt.created_at.seconds), new Date(rt.created_at.year, rt.created_at.month - 1, rt.created_at.day, rt.created_at.hour, rt.created_at.minute, rt.created_at.seconds)]
     })
 
@@ -180,19 +206,21 @@
         dataTable.addColumn({ type: 'string', id: 'Name' });
         dataTable.addColumn({ type: 'date', id: 'Start' });
         dataTable.addColumn({ type: 'date', id: 'End' });
-        dataTable.addRows(test);
+        dataTable.addRows(timeline_{{ key_date }});
 
 
-        var month = test[0][2].getMonth()
-        var options = {
-            timeline: {
-                groupByRowLabel: false,
-                showRowLabels: false
-            },
-            hAxis: {
-                minValue: new Date({{ w_year }}, month, 1),
-            maxValue: new Date({{ w_year }}, month, last_day)
-    }
+    var month = timeline_{{ key_date }}[0][2].getMonth()
+    var options = {
+        timeline: {
+            groupByRowLabel: false,
+            showRowLabels: false
+        },
+        hAxis: {
+            minValue: new Date({{ w_year }}, month, 1),
+        maxValue: new Date({{ w_year }}, month, last_day)
+    },
+    width: '1000',
+        height: '500',
     };
 
     chart.draw(dataTable, options);
