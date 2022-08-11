@@ -275,13 +275,11 @@ def rate_performance(id):
                 last_date = end_date
                 dif = last_date - first_date
                 total_x_hour = (amount  * 3600) / elapsed_time.total_seconds()
-                total_x_hour_w_idle = (amount / (elapsed_time.total_seconds()- idle.total_seconds())) * 3600
                 
                 # amount = len(query)
                 # total_x_hour = (amount / 86400 ) * 3600
             else:
                 total_x_hour = (amount / 3600 )
-                total_x_hour_w_idle = 0
 
             describe_ratings = describe_rates(query)[1]
             ratings = describe_rates(query)[0]
@@ -293,7 +291,7 @@ def rate_performance(id):
 
 
 
-            hourly_stats[str(hour)]  = {"ratings": describe_ratings,"Images rated x elapsed time": "{} x {}".format(amount, elapsed_time),"Images per hour": total_x_hour ,"Images per hour without the idle time": total_x_hour_w_idle, "Idle time in rating cycle thru the hour": idle ,"data": ratings,"has_chart": has_chart}
+            hourly_stats[str(hour)]  = {"ratings": describe_ratings,"Images rated x elapsed time": "{} x {}".format(amount, elapsed_time),"Images per hour": total_x_hour , "Idle time in rating cycle thru the hour": idle ,"data": ratings,"has_chart": has_chart}
         
         w_year = int(year)
         w_month = month
