@@ -188,7 +188,7 @@ def rate_performance(id):
                         idle +=  timedelta(seconds=0)
                     i+=1
                 else:
-                    if not isinstance(int):
+                    if not isinstance(idle,int):
                         idle =  timedelta(seconds=0)
                     else:
                         idle +=  timedelta(seconds=0)
