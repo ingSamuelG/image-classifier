@@ -83,6 +83,13 @@ def rate():
 @classifier.route('/performance/user/<id>/', methods=['GET', 'POST'])
 @login_required
 def rate_performance(id):
+    
+    print(current_user.role_id)
+
+    if current_user.role_id != 1:
+        return redirect(url_for('classifier.rate'))
+
+
     DEFUALT_TIME_TO_RATE = timedelta(seconds=2)
     year = request.args.get("year") 
     month = request.args.get("month")

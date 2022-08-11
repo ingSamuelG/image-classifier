@@ -40,7 +40,7 @@
   /* Position and center the image to scale nicely on all screens */
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   position: relative;
   border-radius: 15rem;
   transition: all 100ms;
@@ -131,5 +131,11 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .img-wrap {
+    width: 90vw;
   }
 }
