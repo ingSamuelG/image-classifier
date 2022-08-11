@@ -13,19 +13,19 @@
                     <div class="col-3">
                         {% if w_year and not w_month %}
                         <a class="a_non_text_decorator"
-                            href="{{url_for('classifier.rate_performance', id='1', year=w_year, month=key_date)}}">
+                            href="{{url_for('classifier.rate_performance', id=id, year=w_year, month=key_date)}}">
                             <h4>{{w_year}} {{key_date}}:</h4>
                         </a>
                         {%elif w_month and w_year and not w_day %}
                         <a class="a_non_text_decorator"
-                            href="{{url_for('classifier.rate_performance', id='1', year=w_year, month=w_month, day=key_date )}}">
+                            href="{{url_for('classifier.rate_performance', id=id, year=w_year, month=w_month, day=key_date )}}">
                             <h4>{{w_month}}, {{key_date}} of {{w_year}}:</h4>
                         </a>
                         {%elif w_month and w_year and w_day%}
                         <h4>{{w_month}}, {{w_day}} of {{w_year}} {{key_date}}:00:00 hour:</h4>
                         {% else %}
                         <a class="a_non_text_decorator"
-                            href="{{url_for('classifier.rate_performance', id='1', year=key_date )}}">
+                            href="{{url_for('classifier.rate_performance', id=id, year=key_date )}}">
                             <h4>{{key_date}}</h4>
                         </a>
                         {%endif%}

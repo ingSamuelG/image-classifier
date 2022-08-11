@@ -301,7 +301,7 @@ def rate_performance(id):
         display_chart =  True
         display_stats = hourly_stats
         
-    return render_template('classifier/performance.html', display_stats = display_stats, display_chart = display_chart , w_year = w_year, w_month = w_month, w_day = w_day)
+    return render_template('classifier/performance.html', display_stats = display_stats, display_chart = display_chart , w_year = w_year, w_month = w_month, w_day = w_day, id=id)
 
 
 # @classifier.route('/performance/user/<id>', methods=['GET', 'POST'])
