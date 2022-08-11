@@ -182,11 +182,12 @@ def rate_performance(id):
                     
                     if i == 0 and dif != 0:
                         idle = (dif - DEFUALT_TIME_TO_RATE) 
-                    if i > 0 and dif != 0:
-                        idle += (dif - DEFUALT_TIME_TO_RATE) 
+                    elif i > 0 and dif != 0:
+                        idle += (dif - DEFUALT_TIME_TO_RATE)
+                    else:
+                        idle +=  timedelta(seconds=0)
                     i+=1
                 else:
-                    idle =DEFUALT_TIME_TO_RATE
                     i+=1
             
 
