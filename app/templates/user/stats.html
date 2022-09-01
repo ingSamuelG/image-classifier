@@ -92,7 +92,7 @@
 <script type="text/javascript">
     const vsBestDay = {{ vsBestDayPerformance | tojson | safe }}
     const vsAver = {{ vsAverage | tojson | safe }}
-    const daysToj = {{ daysTojson | tojson | safe }}
+    // const daysToj = {{ daysTojson | tojson | safe }}
 </script>
 <script type="text/javascript">
     google.charts.load('current', { 'packages': ['gauge'] });
@@ -119,7 +119,7 @@
     }
 </script>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     google.charts.load('current', { 'packages': ['corechart'] });
     google.charts.setOnLoadCallback(drawChart);
 
@@ -136,6 +136,6 @@
 
         chart.draw(data, options);
     }
-</script>
+</script> -->
 
 {% endblock %}
