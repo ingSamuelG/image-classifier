@@ -118,10 +118,8 @@ def stats(id):
     daysTojson = [['Days', 'Images']]
 
     for date, value in  days:
-        print(date)
         if value > maxDay[1]:
             maxDay = date, value
-            print(date.month)
             f_month  = date.strftime("%B")
         
         
