@@ -107,7 +107,6 @@ def stats(id):
         abort(401)
 
     user = RateUser.query.filter_by(id=id).first()
-    ratings = Image_label.query.filter_by(user_id=id).all()
     last = Image_label.query.filter_by(user_id=id).order_by(Image_label.created_at.desc()).first()
     amount_ratings =Image_label.query.filter_by(user_id=id).count()
     sql = text('''SELECT DATE(`created_at`) AS 'day', COUNT(*) AS 'number_of_users' FROM `image_labels` WHERE user_id = {} GROUP BY DATE(`created_at`)'''.format(id))
