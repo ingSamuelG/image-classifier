@@ -4,6 +4,7 @@ from flask_login import login_required, current_user
 from ..models import RateUser,Image_label
 from .form import RegistrationForm, UpdateUserForm
 import datetime
+from sqlalchemy import func, text
 from . import users
 from .. import db
 
@@ -106,38 +107,29 @@ def stats(id):
         abort(401)
 
     user = RateUser.query.filter_by(id=id).first()
-    ratings = Image_label.query.filter_by(user_id=id).order_by(Image_label.created_at.asc()).all()
+    ratings = Image_label.query.filter_by(user_id=id).all()
+    last = Image_label.query.filter_by(user_id=id).order_by(Image_label.created_at.desc()).first()
+    amount_ratings =Image_label.query.filter_by(user_id=id).count()
+    sql = text('''SELECT DATE(`created_at`) AS 'day', COUNT(*) AS 'number_of_users' FROM `image_labels` GROUP BY DATE(`created_at`) ORDER BY created_at ASC''')
 
-    last = ratings[-1]
-    amount_ratings = len(ratings)
-    lastRatings = []
-    days = {}
-    for rating in ratings:
-        count = 0
-        for r in ratings:
-            if r.created_at.day == rating.created_at.day and r.created_at.month == rating.created_at.month and r.created_at.year == rating.created_at.year:
-                count+=1
+    days = db.engine.execute(sql).all()
 
-                days["{}-{}-{}".format(r.created_at.year, r.created_at.month ,r.created_at.day )] = count
-            else:
-                continue
-
-        if rating.created_at.day == last.created_at.day and rating.created_at.month == last.created_at.month and rating.created_at.year == last.created_at.year:
-            lastRatings.append(rating)
-        
-    amount_lastRatings = len(lastRatings)
-    
+    amount_lastRatings = days[-1][1]
     maxDay = ("init", 0)
     daysTojson = [['Days', 'Images']]
-    for key, value in  days.items():
+
+    for date, value in  days:
+        print(date)
         if value > maxDay[1]:
-            maxDay = key, value
-            MaxdateArray = key.split("-")
-            f_month  = datetime.datetime.strptime(MaxdateArray[1], "%m").strftime("%B")
-        daysTojson.append([key, value])
+            maxDay = date, value
+            print(date.month)
+            f_month  = date.strftime("%B")
+        
+        
+        daysTojson.append([date.strftime("%d-%m-%Y"), value])
     
-    dailyAverage = amount_ratings/ len(days.items())
+    dailyAverage = amount_ratings/ len(days)
     vsBestDayPerformance = (amount_lastRatings * 100)/ maxDay[1]
     vsAverage = (amount_lastRatings * 100) / dailyAverage
 
-    return render_template('/user/stats.html', id = id, user = user, amount_ratings = amount_ratings, last = last, amount_lastRatings = amount_lastRatings, maxDay= maxDay, MaxdateArray = MaxdateArray, f_month =f_month, dailyAverage = dailyAverage, vsBestDayPerformance = vsBestDayPerformance, vsAverage = vsAverage, daysTojson= daysTojson)
+    return render_template('/user/stats.html', id = id, user = user, amount_ratings = amount_ratings, last = last, amount_lastRatings = amount_lastRatings, maxDay= maxDay, f_month =f_month, dailyAverage = dailyAverage, vsBestDayPerformance = vsBestDayPerformance, vsAverage = vsAverage, daysTojson= daysTojson)

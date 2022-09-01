@@ -34,9 +34,9 @@
             <div class="col-4 d-flex align-items-center justify-content-center">
                 <p style="font-size: 1.5rem ;
                 font-weight: 300;">Day of max performance: <span class="text-primary"><a class="a_non_text_decorator"
-                            href="{{url_for('classifier.rate_performance', id=id, year=MaxdateArray[0], month=f_month, day=MaxdateArray[2] )}}">
+                            href="{{url_for('classifier.rate_performance', id=id, year=maxDay[0].year, month=f_month, day=maxDay[0].day )}}">
                             <p style="font-size: 1.5rem ;
-                                font-weight: 300;">{{maxDay[0]}}</p>
+                                font-weight: 300;">{{maxDay[0].day}}-{{maxDay[0].month}}-{{maxDay[0].year}}</p>
                         </a></span>
                 </p>
             </div>
