@@ -132,4 +132,4 @@ def stats(id):
     vsBestDayPerformance = (amount_lastRatings * 100)/ maxDay[1]
     vsAverage = (amount_lastRatings * 100) / dailyAverage
 
-    return render_template('/user/stats.html', id = id, user = user, amount_ratings = amount_ratings, last = last, amount_lastRatings = amount_lastRatings, maxDay= maxDay, f_month =f_month, dailyAverage = dailyAverage, vsBestDayPerformance = vsBestDayPerformance, vsAverage = vsAverage, daysTojson= daysTojson)
+    return render_template('/user/stats.html', id = id, user = user, amount_ratings = amount_ratings, last = last, amount_lastRatings = amount_lastRatings, maxDay= maxDay, f_month =f_month, dailyAverage = round(dailyAverage), vsBestDayPerformance = vsBestDayPerformance, vsAverage = vsAverage, daysTojson= daysTojson)
