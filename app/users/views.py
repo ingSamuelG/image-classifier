@@ -110,7 +110,7 @@ def stats(id):
     ratings = Image_label.query.filter_by(user_id=id).all()
     last = Image_label.query.filter_by(user_id=id).order_by(Image_label.created_at.desc()).first()
     amount_ratings =Image_label.query.filter_by(user_id=id).count()
-    sql = text('''SELECT DATE(`created_at`) AS 'day', COUNT(*) AS 'number_of_users' FROM `image_labels` GROUP BY DATE(`created_at`) ORDER BY created_at ASC''')
+    sql = text('''SELECT DATE(`created_at`) AS 'day', COUNT(*) AS 'number_of_users' FROM `image_labels` GROUP BY DATE(`created_at`)''')
 
     days = db.engine.execute(sql).all()
 
