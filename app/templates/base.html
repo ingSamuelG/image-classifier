@@ -43,12 +43,26 @@
                 <li><a class="nav-link" href="{{url_for('classifier.rate')}}">
                         Rate</a>
                 </li>
+                {% if current_user.id != 1 %}
                 <li><a class="nav-link" href="{{url_for('examples.total')}}">Examples</a>
                 </li>
+                {% endif %}
                 {% if current_user.role_id == 1 %}
-                <li><a class="nav-link" href="{{url_for('classifier.rate_performance', id='1')}}">
-                        Performance</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Users
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{url_for('users.view_users', page='1')}}">View users</a>
+                        </li>
+                        <li><a class="dropdown-item" href="{{url_for('users.create_user')}}">Create user</a>
+                        </li>
+                    </ul>
                 </li>
+
+
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,12 +73,8 @@
                                 ratings</a>
                         </li>
                         <li><a class="dropdown-item"
-                                href="{{url_for('examples.showType', type='user_id', id='1')}}">Only user 1
-                                ratings</a>
-                        </li>
-                        <li><a class="dropdown-item"
                                 href="{{url_for('examples.showType', type='combined',  id='all')}}">All
-                                ratings</a></li>
+                                ratings combined</a></li>
                     </ul>
                 </li>
                 {% endif %}

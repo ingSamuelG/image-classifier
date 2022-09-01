@@ -4,6 +4,182 @@
 
 {% block page_content %}
 
-<h1>Hello</h1>
+<div class="container full_height d-flex justify-content-center align-items-center">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col ">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Created</th>
+                            <th scope="col">Updated</th>
+                            <th class="text-center" scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in paginated_users %}
+                        <tr>
+                            <th scope="row">{{user.id}}</th>
+                            <td>{{user.first_name}}</td>
+                            <td>{{user.last_name}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.role.name}}</td>
+                            <td>{{user.created_at}}</td>
+                            <td>{{user.updated_at}}</td>
+                            <td class="d-flex align-items-center justify-content-center">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <a class="btn btn-primary"
+                                                href="{{ url_for('users.update_users' , id = user.id) }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
+                                                </svg>
+                                                Update
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a class="btn btn-secondary"
+                                                href="{{url_for('examples.showType', type='user_id', id=user.id)}}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-star-half" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5.354 5.119 7.538.792A.516.516 0 0 1 8 .5c.183 0 .366.097.465.292l2.184 4.327 4.898.696A.537.537 0 0 1 16 6.32a.548.548 0 0 1-.17.445l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256a.52.52 0 0 1-.146.05c-.342.06-.668-.254-.6-.642l.83-4.73L.173 6.765a.55.55 0 0 1-.172-.403.58.58 0 0 1 .085-.302.513.513 0 0 1 .37-.245l4.898-.696zM8 12.027a.5.5 0 0 1 .232.056l3.686 1.894-.694-3.957a.565.565 0 0 1 .162-.505l2.907-2.77-4.052-.576a.525.525 0 0 1-.393-.288L8.001 2.223 8 2.226v9.8z" />
+                                                </svg>
+                                                Ratings
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a class="btn btn-dark" href="{{url_for('users.stats', id=user.id)}}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd"
+                                                        d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z" />
+                                                </svg>
+                                                Stats
+                                            </a>
+                                        </div>
+                                        <div class="col-3">
+                                            <a class="btn btn-info"
+                                                href="{{url_for('classifier.rate_performance', id=user.id)}}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-speedometer" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M8 2a.5.5 0 0 1 .5.5V4a.5.5 0 0 1-1 0V2.5A.5.5 0 0 1 8 2zM3.732 3.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 8a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 7.31A.91.91 0 1 0 8.85 8.569l3.434-4.297a.389.389 0 0 0-.029-.518z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M6.664 15.889A8 8 0 1 1 9.336.11a8 8 0 0 1-2.672 15.78zm-4.665-4.283A11.945 11.945 0 0 1 8 10c2.186 0 4.236.585 6.001 1.606a7 7 0 1 0-12.002 0z" />
+                                                </svg>
+                                                Performance
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#staticBackdrop-{{user.id}}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                                </svg>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="staticBackdrop-{{user.id}}" data-bs-backdrop="static"
+                                        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Deleting scenario
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    are you sure that you want to delete user: {{user.first_name}}
+                                                    {{user.last_name}}?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <a class="btn btn-danger"
+                                                        href="{{ url_for('users.delete_users', id = user.id) }}">
+                                                        Delete
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        {% if users.has_prev %}
+                        <li class="page-item">
+                            <a href="{{ url_for('users.view_users',u_type = u_type , page=page-1) }}"
+                                class="page-link">Previous</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link">Previous</a>
+                        </li>
+                        {%endif%}
+                        {%- for page in users.iter_pages() %}
+                        {% if page %}
+                        {% if page != users.page %}
+                        <li class="page-item"><a class="page-link"
+                                href="{{ url_for('users.view_users',u_type = u_type , page=page) }}">{{
+                                page
+                                }}</a></li>
+                        {% else %}
+                        <li class="page-item disabled"><a class="page-link"
+                                href="{{ url_for('users.view_users',u_type = u_type , page=page) }}">{{
+                                page
+                                }}</a></li>
+                        {% endif %}
+                        {% else %}
+                        <li class="page-item">
+                            <span class="ellipsis page-link">…</span>
+                        </li>
+                        {% endif %}
+                        {%- endfor %}
+                        {% if users.has_next %}
+                        <li class="page-item">
+                            <a href="{{ url_for('users.view_users',u_type = u_type , page=page+1) }}"
+                                class="page-link">Next</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link">Next</a>
+                        </li>
+                        {%endif%}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}

@@ -1,5 +1,5 @@
-from flask import render_template
-from flask_login import login_required
+from flask import render_template, redirect, url_for
+from flask_login import login_required, current_user
 from . import examples
 from ..models import Image, Image_Rating, Image_label
 import random
@@ -67,6 +67,12 @@ def total():
 @examples.route('/see/<type>/<id>', methods=['GET', 'POST'])
 @login_required
 def showType(type,id):
+    
+    if current_user.role_id != 1:
+        if current_user.role_id != int(id):
+            return redirect(url_for('main.index'))
+
+
     if type == 'user_id':
         all_3 =  Image_label.query.filter_by(rating_score = 3, user_id = int(id))
         all_2 =  Image_label.query.filter_by(rating_score = 2, user_id = int(id))

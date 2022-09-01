@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf%}
+
+
+{% block page_content %}
+
+<div class="container full_height d-flex align-items-center justify-content-center">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="display-6">statas for: <span class=" text-primary">
+                        {{user.first_name}} </span></h1>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-4 d-flex align-items-center justify-content-center">
+                <p style="font-size: 1.5rem ;
+                font-weight: 300;">Last Login:
+                    <span class=" text-primary"><strong>
+                            {{last.created_at}} </span></strong>
+                </p>
+            </div>
+            <div class="col-4 d-flex align-items-center justify-content-center">
+                <p style="font-size: 1.5rem ;
+                font-weight: 300;">Rated: <span class="text-primary"><strong> {{amount_ratings}} </strong></span>
+                    images
+                </p>
+            </div>
+            <div class="col-4 d-flex align-items-center justify-content-center">
+                <p style="font-size: 1.5rem ; font-weight: 300;">Last Rating cycle: <span class="text-primary"><strong>
+                            {{amount_lastRatings}} </strong></span> images
+                </p>
+            </div>
+            <div class="col-4 d-flex align-items-center justify-content-center">
+                <p style="font-size: 1.5rem ;
+                font-weight: 300;">Day of max performance: <span class="text-primary"><a class="a_non_text_decorator"
+                            href="{{url_for('classifier.rate_performance', id=id, year=MaxdateArray[0], month=f_month, day=MaxdateArray[2] )}}">
+                            <p style="font-size: 1.5rem ;
+                                font-weight: 300;">{{maxDay[0]}}</p>
+                        </a></span>
+                </p>
+            </div>
+            <div class="col-4 d-flex align-items-center justify-content-center">
+                <p style="font-size: 1.5rem ;
+                font-weight: 300;">Max amount rated on one day:
+                    <span class="text-primary">
+                        <strong> {{maxDay[1] }}</strong></span>
+                    images
+                </p>
+
+            </div>
+            <div class="col-4 d-flex align-items-center justify-content-center">
+                <p style="font-size: 1.5rem ;
+                                        font-weight: 300;">Daily average:
+                    <span class="text-primary">
+                        <strong> {{dailyAverage }}</strong></span>
+                    images per day
+                </p>
+
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12 d-flex align-items-center justify-content-center">
+                <div class="container-fluid">
+                    <div class="row d-flex align-items-center justify-content-center">
+                        <div class="col-6" style="text-align: center;">
+                            <p style="font-size: 1.5rem ; font-weight: 300;">Comparing the last cycle:
+                            </p>
+                        </div>
+                        <div class="col-6 d-flex align-items-center justify-content-center">
+                            <p style="font-size: 1.5rem ; font-weight: 300;">Ratings:
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center justify-content-center">
+                        <div class="col-6 d-flex align-items-center justify-content-center">
+                            <div id="chart_div" style="width: 400px; height: 300px;"></div>
+                        </div>
+                        <div class="col-6 d-flex align-items-center justify-content-center">
+                            <div id="curve_chart" style="width: 900px; height: 400px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+<script type="text/javascript">
+    const vsBestDay = {{ vsBestDayPerformance | tojson | safe }}
+    const vsAver = {{ vsAverage | tojson | safe }}
+    const daysToj = {{ daysTojson | tojson | safe }}
+</script>
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['gauge'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['VS Average', parseFloat(vsAver.toFixed(1))],
+            ['Vs Best', parseFloat(vsBestDay.toFixed(1))],
+        ]);
+
+        var options = {
+            width: 450, height: 300,
+            redFrom: 90, redTo: 100,
+            yellowFrom: 75, yellowTo: 90,
+            minorTicks: 5
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+    }
+</script>
+
+<script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable(daysToj);
+
+        var options = {
+            title: 'User Performance',
+            curveType: 'function',
+            legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+    }
+</script>
+
+{% endblock %}

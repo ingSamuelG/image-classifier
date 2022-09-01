@@ -51,4 +51,7 @@ def create_app(config_name):
     from .examples import examples as examples_blueprint
     app.register_blueprint(examples_blueprint, url_prefix='/examples')
 
+    from .users import users as users_blueprint
+    app.register_blueprint(users_blueprint, url_prefix='/users')
+
     return app
